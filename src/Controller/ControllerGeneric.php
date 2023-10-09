@@ -22,10 +22,10 @@
 
         public function enregistrerPreference()
         {
-            PreferenceController::enregistrer($_GET['controleur_defaut']);
-            $cookieKey = PreferenceController::lire();
-            (new ControllerGeneric)->afficheVue("Préférence enregistré", "/../formulairePreference.php",
-            ['cookieKey' => $cookieKey]);
+            if (isset($_GET['controleur_defaut'])) {
+                PreferenceController::enregistrer($_GET['controleur_defaut']);
+            }
+            (new ControllerGeneric)->afficheVue("Préférence enregistré", "/../formulairePreference.php");
         }
 
         public function error(Exception $e)

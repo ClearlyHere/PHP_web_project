@@ -24,10 +24,16 @@
         }
 
         public static function checkRadio(string $controller){
-            if (PreferenceController::existe())
+            if (isset($_GET['controleur_defaut']))
             {
-                $preference = PreferenceController::lire();
-                if ($preference == $controller) {
+                if ($_GET['controleur_defaut'] == $controller) {
+                    echo "checked";
+                }
+            }
+            else if (PreferenceController::existe())
+            {
+                if (PreferenceController::lire() == $controller)
+                {
                     echo "checked";
                 }
             }

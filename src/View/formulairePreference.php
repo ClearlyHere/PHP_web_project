@@ -1,9 +1,13 @@
 <?php
     use App\Covoiturage\Lib\PreferenceController;
 
-    if (isset($cookieKey))
+    if (isset($_GET['controleur_defaut']))
     {
-        echo "<p>Vous avez enregistré " . $cookieKey . " comme préférence!</p><br>";
+        echo "<p>Vous avez enregistré " . $_GET['controleur_defaut'] . " comme préférence!</p><br>";
+    }
+    else if (PreferenceController::existe())
+    {
+        echo "<p>Votre préférence actuelle : " . PreferenceController::lire() . "</p><br>";
     }
 ?>
 <form method="GET" action="frontController.php">
