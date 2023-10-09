@@ -1,0 +1,24 @@
+<form method="GET" action="frontController.php">
+    <input type="hidden" name="controller" value="utilisateur"/>
+    <input type="hidden" name="action" value="updated"/>
+    <input type="hidden" name="oldLogin" value="<?php if (isset($utilisateur)) echo $utilisateur->getPrimaryKeyValue(); ?>">
+    <fieldset>
+        <legend><?php if (isset($utilisateur)) echo "Mise à jour utilisateur " . $utilisateur->getPrimaryKeyValue(); ?></legend>
+        <p>
+            <label for="login_id">Login <?php if (isset($utilisateur)) echo $utilisateur->getPrimaryKeyValue()?></label> :
+            <input type="text" placeholder="johndoe" name="login" id="login_id" required/>
+        </p>
+        <p>
+            <label for="nom_id">Nom <?php if (isset($utilisateur)) echo $utilisateur->GetNom()?></label> :
+            <input type="text" placeholder="John" name="nom" id="nom_id" required/>
+        </p>
+        <p>
+            <label for="prenom">Nom <?php if (isset($utilisateur)) echo $utilisateur->GetPrenom()?></label> :
+            <input type="text" placeholder="Doe" name="prenom" id="prenom" required/>
+        </p>
+        <p>
+            <input type="submit" value="Envoyer"/>
+        </p>
+    </fieldset>
+</form>
+<a href="frontController.php?controller=utilisateur&action=readAll">Retour</a>
