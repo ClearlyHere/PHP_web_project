@@ -3,6 +3,7 @@
     namespace App\Covoiturage\Controller;
 
     use App\Covoiturage\Config\ExceptionHandling;
+    use App\Covoiturage\Model\HTTP\Session;
     use Exception;
     use App\Covoiturage\Lib\PreferenceController;
 
@@ -17,6 +18,7 @@
 
         public function formulairePreference()
         {
+            $session = Session::getInstance();
             (new ControllerGeneric)->afficheVue("Préférence contrôlleur", "/../formulairePreference.php");
         }
 

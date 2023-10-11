@@ -1,10 +1,9 @@
 <?php
-
     namespace App\Covoiturage\Model\HTTP;
     use Exception;
     class Session
     {
-        private static ?Session $instance = null;
+        public static ?Session $instance = null;
 
         private function __construct()
         {
@@ -12,6 +11,11 @@
             {
                 throw new Exception("La session n'a pas réussi à démarer");
             }
+        }
+
+        public function contient(string $name)
+        {
+            return isset($_SESSION[$name]);
         }
 
         public function enregistrer(string $cle, mixed $valeur) : void
@@ -43,6 +47,6 @@
             session_unset();
             session_destroy();
             Cookie::effacerCookie(session_name());
-            $instance = null;
+            static::$instance = null;
         }
     }
