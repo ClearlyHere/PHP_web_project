@@ -9,15 +9,13 @@
     {
         private static string $cleFlash = "_messageFlash";
 
-        public static function ajouter(string $type, string $message) : bool
+        public static function ajouter(string $type, string $message) : void
         {
             if ($session = Session::getInstance()) {
                 $messageData = array($type, $message);
                 $cookieData = serialize($messageData);
                 $session->enregistrer(static::$cleFlash, $cookieData);
-                return true;
             }
-            return false;
         }
 
         public static function contientMessage() : bool
@@ -30,9 +28,13 @@
         {
             if ($session = Session::getInstance()){
                 $cookieData = $session->lire(static::$cleFlash);
-                $session->supprimer(static::$cleFlash);
-                $messageArray = unserialize($cookieData);
-                return self::conversionMessageHTML($messageArray);
+
+                if (!(is_null($cookieData))) {
+                    $session->supprimer(static::$cleFlash);
+                    $messageArray = unserialize($cookieData);
+                    return self::conversionMessageHTML($messageArray);
+                }
+                else return false;
             }
             return false;
         }

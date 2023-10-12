@@ -48,4 +48,3 @@
             $controllerClassName::$action();
         }
     }
-    MessageFlash::ajouter("success", "test");

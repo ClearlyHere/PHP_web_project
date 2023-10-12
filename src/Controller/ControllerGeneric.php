@@ -3,6 +3,7 @@
     namespace App\Covoiturage\Controller;
 
     use App\Covoiturage\Config\ExceptionHandling;
+    use App\Covoiturage\Lib\MessageFlash;
     use App\Covoiturage\Model\HTTP\Session;
     use Exception;
     use App\Covoiturage\Lib\PreferenceController;
@@ -27,6 +28,7 @@
             if (isset($_GET['controleur_defaut'])) {
                 PreferenceController::enregistrer($_GET['controleur_defaut']);
             }
+            MessageFlash::ajouter("success", "Vous avez enregistré " . $_GET['controleur_defaut'] . " comme votre préférence!");
             (new ControllerGeneric)->afficheVue("Préférence enregistré", "/../formulairePreference.php");
         }
 

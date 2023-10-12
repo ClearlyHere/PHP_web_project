@@ -30,7 +30,9 @@
 
         public function supprimer(string $cle) : void
         {
-            unset($_SESSION[$cle]);
+            if (isset($_SESSION[$cle])) {
+                unset($_SESSION[$cle]);
+            }
         }
 
         public static function getInstance() : Session
