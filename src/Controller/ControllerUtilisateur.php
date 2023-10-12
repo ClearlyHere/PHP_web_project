@@ -25,7 +25,6 @@
 
         public static function readAll(): void
         {
-            MessageFlash::ajouter("info", "En tant qu'admin, vous pouvez modifier les données ci-dessous");
             $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
             (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
                 ["utilisateurs" => $utilisateurs]);

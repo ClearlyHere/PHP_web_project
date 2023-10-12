@@ -24,7 +24,6 @@
 
         public static function readAll(): void
         {
-            MessageFlash::ajouter("info", "En tant qu'admin, vous pouvez modifier les données ci-dessous");
             $trajets = (new TrajetRepository())->selectAll(); // Appel au modèle pour gérer
             (new ControllerTrajet())->afficheVue('Liste de Trajets', '/list.php',
                 ["trajets" => $trajets]);

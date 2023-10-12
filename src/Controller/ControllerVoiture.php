@@ -25,7 +25,6 @@
         // Actions et routage
         public static function readAll(): void
         {
-            MessageFlash::ajouter("info", "En tant qu'admin, vous pouvez modifier les données ci-dessous");
             $voitures = (new VoitureRepository())->selectAll(); // Appel au modèle pour gérer
             (new ControllerVoiture())->afficheVue('Liste de voitures', '/list.php',
                 ["voitures" => $voitures]);
