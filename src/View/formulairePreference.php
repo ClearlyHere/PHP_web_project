@@ -1,7 +1,11 @@
 <?php
     use App\Covoiturage\Lib\PreferenceController;
 
-    if (PreferenceController::existe())
+    if (isset($_GET['controleur_defaut']))
+    {
+        echo "<p>Préférence enregistré : " . $_GET['controleur_defaut'] . "</p>";
+    }
+    else if (PreferenceController::existe())
     {
         echo "<p>Votre préférence actuelle : " . PreferenceController::lire() . "</p>";
     }

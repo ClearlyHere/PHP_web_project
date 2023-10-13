@@ -2,9 +2,7 @@
 
     use App\Covoiturage\Config\ExceptionHandling;
     use App\Covoiturage\Controller\ControllerVoiture;
-    use App\Covoiturage\Lib\MessageFlash;
     use App\Covoiturage\Lib\PreferenceController;
-    use App\Covoiturage\Model\HTTP\Session;
 
     require_once(__DIR__ . '/../src/Lib/Psr4AutoloaderClass.php');
 

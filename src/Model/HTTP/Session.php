@@ -1,5 +1,7 @@
 <?php
     namespace App\Covoiturage\Model\HTTP;
+    use App\Covoiturage\Config\Conf;
+    use App\Covoiturage\Lib\MessageFlash;
     use Exception;
     class Session
     {
@@ -7,10 +9,21 @@
 
         private function __construct()
         {
+            session_set_cookie_params(Conf::$dureeSession);
             if (session_start() === false)
             {
                 throw new Exception("La session n'a pas réussi à démarer");
             }
+            $this->verifierDerniereActivite();
+        }
+
+        public function verifierDerniereActivite()
+        {
+            if (isset($_SESSION['derniereActivite']) && (time() - $_SESSION['derniereActivite'] > Conf::$dureeSession))
+            {
+                session_unset();
+            }
+            $_SESSION['derniereActivite'] = time();
         }
 
         public function contient(string $name)

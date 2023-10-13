@@ -3,6 +3,7 @@
     // Class configuration pour se connecter à la BDD
     class Conf
     {
+        public static int $dureeSession = 300;
         // Attribut array $databases contenant les informations login à la BDD
         static private array $databases = array(
             'hostname' => 'localhost',
