@@ -77,7 +77,7 @@
                 (new ControllerVoiture())->error($e);
             }
         }
-
+ 
         public static function update(string $immat)
         {
             $voiture = (new VoitureRepository())->select($immat);
