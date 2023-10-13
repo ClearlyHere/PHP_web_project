@@ -17,7 +17,9 @@
             107 => "Instance de données incompatibles",
             108 => "Immaticulation inexistante",
             109 => "Ce controller n'existe pas",
-            110 => "Cette action n'existe pas"
+            110 => "Cette action n'existe pas",
+            111 => "Les mots de passes ne coincident pas",
+            112 => "Ancien mot de passe érronée",
         ];
 
         private static function throwException($errorCode): void

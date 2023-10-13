@@ -4,7 +4,7 @@
 
     use App\Covoiturage\Config\ExceptionHandling;
     use App\Covoiturage\Lib\MessageFlash;
-    use App\Covoiturage\Model\HTTP\Cookie;
+    use App\Covoiturage\Lib\MotDePasse;
     use App\Covoiturage\Model\Repository\UtilisateurRepository;
     use Exception;
 
@@ -52,19 +52,27 @@
         public static function updated(): void
         {
             try {
-                $new_utilisateur = (new UtilisateurRepository())->Construire($_GET);
+                $new_utilisateur = (new UtilisateurRepository())->construireDepuisFormulaire($_GET);
+                ExceptionHandling::checkTrueValue($_GET['mdpHache'] === $_GET['mdpHacheVerif'], 111);
+                ExceptionHandling::checkTrueValue(MotDePasse::verifier($_GET['ancienMdpClair'], $new_utilisateur->getMdpHache()), 112);
                 $oldLogin = $_GET['oldLogin'];
-
                 $retour = (new UtilisateurRepository())->mettreAJour($new_utilisateur, $oldLogin);
                 ExceptionHandling::checkTrueValue($retour, 106);
                 $utilisateurs = (new UtilisateurRepository())->selectAll();
-                MessageFlash::ajouter("success", "L'utilisateur' " . $new_utilisateur->getPrimaryKeyValue(). " a bien été mise à jour!" );
+                MessageFlash::ajouter("success", "L'utilisateur' " . $new_utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
                 (new ControllerUtilisateur())->afficheVue("Update utilisateur", "/list.php",
                     ["login" => $new_utilisateur->getPrimaryKeyValue(), "utilisateurs" => $utilisateurs]);
             } catch (Exception $e) {
-                MessageFlash::ajouter("danger", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue(). " n'a pas été mise à jour" );
-
-                (new ControllerUtilisateur())->error($e);
+                if ($e->getCode() === 112) {
+                    MessageFlash::ajouter("warning", "L'ancien mot de passe que vous avez saisi est érronée");
+                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/update.php");
+                } else if ($e->getCode() === 111) {
+                    MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
+                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/update.php");
+                } else {
+                    MessageFlash::ajouter("danger", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " n'a pas été mise à jour");
+                    (new ControllerUtilisateur())->error($e);
+                }
             }
         }
 
@@ -76,7 +84,8 @@
         public static function created(): void
         {
             try {
-                $nouvel_utilisateur = (new UtilisateurRepository())->Construire($_GET);
+                ExceptionHandling::checkTrueValue($_GET['mdpHache'] === $_GET['mdpHacheVerif'], 111);
+                $nouvel_utilisateur = (new UtilisateurRepository())->construireDepuisFormulaire($_GET);
                 $retour = (new UtilisateurRepository())->Sauvegarder($nouvel_utilisateur);
                 ExceptionHandling::checkTrueValue(is_bool($retour), 106);
                 $utilisateurs = (new UtilisateurRepository())->selectAll();
@@ -85,8 +94,13 @@
                 (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/list.php",
                     ['utilisateurs' => $utilisateurs, 'login' => $nouvel_utilisateur->getPrimaryKeyValue()]);
             } catch (Exception $e) {
-                MessageFlash::ajouter("danger", "L'utilisateur n'a pas pu être créé");
-                (new ControllerUtilisateur())->error($e);
+                if ($e->getCode() === 111) {
+                    MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
+                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/create.php");
+                } else {
+                    MessageFlash::ajouter("danger", "L'utilisateur n'a pas pu être créé");
+                    (new ControllerUtilisateur())->error($e);
+                }
             }
         }
 
@@ -96,41 +110,41 @@
                 $bool = (new UtilisateurRepository())->effacer($login);
                 ExceptionHandling::checkTrueValue(is_bool($bool), 106);
                 $utilisateurs = (new UtilisateurRepository())->selectAll();
-                MessageFlash::ajouter("success", "L'utilisateur " . $login . " a bien été éffacée!" );
+                MessageFlash::ajouter("success", "L'utilisateur " . $login . " a bien été éffacée!");
 
                 (new ControllerUtilisateur())->afficheVue("Utilisateur éffacé", "/list.php",
                     ["utilisateurs" => $utilisateurs, "login" => $login]);
             } catch (Exception $e) {
-                MessageFlash::ajouter("danger", "L'utilisateur " . $login . " n'a pas été éffacé" );
+                MessageFlash::ajouter("danger", "L'utilisateur " . $login . " n'a pas été éffacé");
 
                 (new ControllerUtilisateur())->error($e);
             }
         }
     }
 
-//        public static function deposerCookie() : void
-//        {
-//            Cookie::enregistrer('COOKIE1', 1, 3600);
-//            Cookie::enregistrer('COOKIE2', 2, 3600);
-//            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-//            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-//                ["utilisateurs" => $utilisateurs]);
-//        }
-//
-//        public static function lireCookie() : void
-//        {
-//            $cookies = [Cookie::lire('COOKIE1'),Cookie::lire('COOKIE2')];
-//            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-//            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-//                ["utilisateurs" => $utilisateurs, "cookies" => $cookies]);
-//        }
-//
-//        public static function supprimerCookie() : void
-//        {
-//            Cookie::effacerCookie('COOKIE1');
-//            Cookie::effacerCookie('COOKIE2');
-//            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-//            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-//                ["utilisateurs" => $utilisateurs]);
-//        }
-//    }
+    //        public static function deposerCookie() : void
+    //        {
+    //            Cookie::enregistrer('COOKIE1', 1, 3600);
+    //            Cookie::enregistrer('COOKIE2', 2, 3600);
+    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
+    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
+    //                ["utilisateurs" => $utilisateurs]);
+    //        }
+    //
+    //        public static function lireCookie() : void
+    //        {
+    //            $cookies = [Cookie::lire('COOKIE1'),Cookie::lire('COOKIE2')];
+    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
+    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
+    //                ["utilisateurs" => $utilisateurs, "cookies" => $cookies]);
+    //        }
+    //
+    //        public static function supprimerCookie() : void
+    //        {
+    //            Cookie::effacerCookie('COOKIE1');
+    //            Cookie::effacerCookie('COOKIE2');
+    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
+    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
+    //                ["utilisateurs" => $utilisateurs]);
+    //        }
+    //    }

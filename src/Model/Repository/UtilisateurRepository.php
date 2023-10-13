@@ -2,6 +2,7 @@
 
     namespace App\Covoiturage\Model\Repository;
 
+    use App\Covoiturage\Lib\MotDePasse;
     use App\Covoiturage\Model\DataObject\Utilisateur;
     use PDO;
 
@@ -25,16 +26,27 @@
 
         public function getNomsColonnes(): array
         {
-            return array('login', 'nom', 'prenom');
+            return array('login', 'mdpHache', 'nom', 'prenom', );
         }
 
         public function Construire(array $arrayData): Utilisateur|bool
         {
                 return new Utilisateur(
                     $arrayData['login'],
+                    $arrayData['mdpHache'],
                     $arrayData['nom'],
-                    $arrayData['prenom']
+                    $arrayData['prenom'],
                 );
+        }
+
+        public static function construireDepuisFormulaire(array $tableauFormulaire) : Utilisateur
+        {
+            $tableauFormulaire['mdpHache'] = MotDePasse::hacher($tableauFormulaire['mdpHache']);
+            $tableauConstruire = [$tableauFormulaire['login'],
+                $tableauFormulaire['mdpHache'],
+                $tableauFormulaire['nom'],
+                $tableauFormulaire['prenom']];
+            return new Utilisateur(...$tableauConstruire);
         }
 
         public static function withLogin($login): array

@@ -46,3 +46,4 @@
             $controllerClassName::$action();
         }
     }
+    var_dump(\App\Covoiturage\Lib\MotDePasse::verifier('test', '$2y$10$oKw5Rm0VPoz4HKG.4CdLGeXrh5y6ux6RogKaLqQrW4OFVjSiXzft2'));

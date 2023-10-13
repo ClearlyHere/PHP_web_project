@@ -9,6 +9,18 @@
             <input type="text" placeholder="johndoe" name="login" id="login_id" required/>
         </p>
         <p>
+            <label for="mdp_id">Mot de passe&#42; :</label>
+            <input type="password" placeholder="**********" name="ancienMdpClair" id="mdp_id" required>
+        </p>
+        <p>
+            <label for="mdp_id">Nouveau mot de passe&#42; :</label>
+            <input type="password" placeholder="**********" name="mdpHache" id="mdp_id" required>
+        </p>
+        <p>
+            <label for="mdp2_id">Vérification du nouveau mot de passe&#42; :</label>
+            <input type="password" placeholder="**********" name="mdpHacheVerif" id="mdp2_id" required>
+        </p>
+        <p>
             <label for="nom_id">Nom <?php if (isset($utilisateur)) echo $utilisateur->GetNom()?></label> :
             <input type="text" placeholder="John" name="nom" id="nom_id" required/>
         </p>

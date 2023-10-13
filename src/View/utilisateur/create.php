@@ -8,6 +8,14 @@
             <input type="text" placeholder="johndoe" name="login" id="login_id" required/>
         </p>
         <p>
+            <label for="mdp_id">Mot de passe&#42;</label>
+            <input type="password" placeholder="**********" name="mdpHache" id="mdp_id" required>
+        </p>
+        <p>
+            <label for="mdp2_id">Vérification du mot de passe&#42;</label>
+            <input type="password" placeholder="**********" name="mdpHacheVerif" id="mdp2_id" required>
+        </p>
+        <p>
             <label for="nom_id">Nom</label> :
             <input type="text" placeholder="John" name="nom" id="nom_id" required/>
         </p>
