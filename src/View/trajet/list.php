@@ -16,4 +16,3 @@
         echo "</ul>";
         echo '<br><a href=\'frontController.php?controller=trajet&action=create \'>Créer un trajet</a> ';
     }
-?>

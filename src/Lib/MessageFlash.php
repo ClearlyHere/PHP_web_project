@@ -2,7 +2,6 @@
 
     namespace App\Covoiturage\Lib;
 
-    use App\Covoiturage\Model\HTTP\Cookie;
     use App\Covoiturage\Model\HTTP\Session;
 
     class MessageFlash

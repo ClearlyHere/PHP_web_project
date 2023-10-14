@@ -2,7 +2,6 @@
 
     namespace App\Covoiturage\Config;
 
-    use App\Covoiturage\Model\DataObject\AbstractDataObject;
     use Exception;
 
     class ExceptionHandling
@@ -50,7 +49,8 @@
                 self::throwException($errorCode);
         }
 
-        public static function checkInstanceClass(mixed $instance, string $instanceClassName, int $errorCode) {
+        public static function checkInstanceClass(mixed $instance, string $instanceClassName, int $errorCode): void
+        {
             if (!$instance instanceof $instanceClassName) {
                 self::throwException($errorCode);
             }

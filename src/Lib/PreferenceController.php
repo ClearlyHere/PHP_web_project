@@ -23,7 +23,7 @@
             Cookie::effacerCookie(static::$clePreference);
         }
 
-        public static function checkRadio(string $controller){
+        public static function checkRadio(string $controller) : void {
             if (isset($_GET['controleur_defaut']))
             {
                 if ($_GET['controleur_defaut'] == $controller) {

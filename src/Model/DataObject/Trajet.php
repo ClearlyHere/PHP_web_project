@@ -19,6 +19,7 @@
 
 
         // Méthode constructeur habituel
+        /** @noinspection PhpUnhandledExceptionInspection */
         public function __construct(
             int         $id,
             string      $depart,

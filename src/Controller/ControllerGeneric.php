@@ -17,13 +17,13 @@
             require(__DIR__ . '/../View/view.php'); // Charge la vue
         }
 
-        public function formulairePreference()
+        public function formulairePreference(): void
         {
-            $session = Session::getInstance();
+            Session::getInstance();
             (new ControllerGeneric)->afficheVue("Préférence contrôlleur", "/../formulairePreference.php");
         }
 
-        public function enregistrerPreference()
+        public function enregistrerPreference(): void
         {
             if (isset($_GET['controleur_defaut'])) {
                 PreferenceController::enregistrer($_GET['controleur_defaut']);
@@ -32,7 +32,7 @@
             (new ControllerGeneric)->afficheVue("Préférence enregistré", "/../formulairePreference.php");
         }
 
-        public function error(Exception $e)
+        public function error(Exception $e): void
         {
             $errorCode = $e->getCode();
             $errorMessage = ExceptionHandling::getErrorMessage($errorCode);

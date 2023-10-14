@@ -42,7 +42,7 @@
             }
         }
 
-        public static function update($login)
+        public static function update($login): void
         {
             $utilisateur = (new UtilisateurRepository())->select($login);
             (new ControllerUtilisateur())->afficheVue("Update utilisateur", "/update.php",

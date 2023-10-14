@@ -2,6 +2,7 @@
 
     use App\Covoiturage\Config\ExceptionHandling;
     use App\Covoiturage\Controller\ControllerVoiture;
+    use App\Covoiturage\Lib\MotDePasse;
     use App\Covoiturage\Lib\PreferenceController;
 
     require_once(__DIR__ . '/../src/Lib/Psr4AutoloaderClass.php');
@@ -46,4 +47,4 @@
             $controllerClassName::$action();
         }
     }
-    var_dump(\App\Covoiturage\Lib\MotDePasse::verifier('test', '$2y$10$oKw5Rm0VPoz4HKG.4CdLGeXrh5y6ux6RogKaLqQrW4OFVjSiXzft2'));
+    var_dump(MotDePasse::verifier('test', '$2y$10$oKw5Rm0VPoz4HKG.4CdLGeXrh5y6ux6RogKaLqQrW4OFVjSiXzft2'));

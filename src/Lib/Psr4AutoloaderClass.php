@@ -99,7 +99,7 @@ class Psr4AutoloaderClass
         if ($prepend) {
             array_unshift($this->prefixes[$prefix], $base_dir);
         } else {
-            array_push($this->prefixes[$prefix], $base_dir);
+            $this->prefixes[$prefix][] = $base_dir;
         }
     }
 
@@ -107,10 +107,10 @@ class Psr4AutoloaderClass
      * Loads the class file for a given class name.
      *
      * @param string $class The fully-qualified class name.
-     * @return mixed The mapped file name on success, or boolean false on
+     * @return string|bool The mapped file name on success, or boolean false on
      * failure.
      */
-    public function loadClass(string $class)
+    public function loadClass(string $class): string|bool
     {
         // the current namespace prefix
         $prefix = $class;
@@ -145,10 +145,10 @@ class Psr4AutoloaderClass
      *
      * @param string $prefix The namespace prefix.
      * @param string $relative_class The relative class name.
-     * @return mixed Boolean false if no mapped file can be loaded, or the
+     * @return string|bool Boolean false if no mapped file can be loaded, or the
      * name of the mapped file that was loaded.
      */
-    protected function loadMappedFile(string $prefix, string $relative_class)
+    protected function loadMappedFile(string $prefix, string $relative_class): string|bool
     {
         // are there any base directories for this namespace prefix?
         if (isset($this->prefixes[$prefix]) === false) {

@@ -54,7 +54,7 @@
 
         public static function getPassagers(int $id): array
         {
-            $sql = "SELECT identifiant FROM trajet INNER JOIN passager ON trajet.id = passager.trajetID
+            $sql = "SELECT passagerLogin FROM trajet INNER JOIN passager ON trajet.id = passager.trajetID
             WHERE passager.trajetID = :trajetIDTag";
             $values = array("trajetIDTag" => $id);
             $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
@@ -73,7 +73,7 @@
         public static function SupprimerPassager(int $trajetID, string $passagerLogin): void
         {
             try {
-                $sql = "DELETE FROM passager WHERE trajetID = :trajetIDTag AND identifiant = :identifiantTag";
+                $sql = "DELETE FROM passager WHERE trajetID = :trajetIDTag AND passagerLogin = :identifiantTag";
                 $values = array(
                     "trajetIDTag" => $trajetID,
                     "identifiantTag" => $passagerLogin

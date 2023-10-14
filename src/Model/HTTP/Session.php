@@ -1,7 +1,7 @@
 <?php
+
     namespace App\Covoiturage\Model\HTTP;
     use App\Covoiturage\Config\Conf;
-    use App\Covoiturage\Lib\MessageFlash;
     use Exception;
     class Session
     {
@@ -17,7 +17,7 @@
             $this->verifierDerniereActivite();
         }
 
-        public function verifierDerniereActivite()
+        public function verifierDerniereActivite(): void
         {
             if (isset($_SESSION['derniereActivite']) && (time() - $_SESSION['derniereActivite'] > Conf::$dureeSession))
             {
@@ -26,7 +26,7 @@
             $_SESSION['derniereActivite'] = time();
         }
 
-        public function contient(string $name)
+        public function contient(string $name): bool
         {
             return isset($_SESSION[$name]);
         }

@@ -18,7 +18,7 @@
             return password_verify($mdpPoivre, $mdpHache);
         }
 
-        public static function genererChaineAleatoire(int $nbCaracteres = 22)
+        public static function genererChaineAleatoire(int $nbCaracteres = 22) : string
         {
             // 22 caractères par défaut pour avoir au moins 128 bits aléatoires
             // 1 caractère = 6 bits car 64=2^6 caractères de base 64

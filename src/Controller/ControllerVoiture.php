@@ -78,7 +78,7 @@
             }
         }
  
-        public static function update(string $immat)
+        public static function update(string $immat): void
         {
             $voiture = (new VoitureRepository())->select($immat);
 
@@ -86,7 +86,7 @@
                 ["voiture" => $voiture]);
         }
 
-        public static function updated()
+        public static function updated(): void
         {
             try {
                 $nouvelle_voiture = (new VoitureRepository())->Construire($_GET);
