@@ -23,6 +23,16 @@
             <label for="prenom_id">Prenom</label> :
             <input type="text" placeholder="Doe" name="prenom" id="prenom_id" required/>
         </p>
+        <?php
+
+            use App\Covoiturage\Lib\ConnexionUtilisateur;
+
+            if (ConnexionUtilisateur::estAdministrateur())
+                echo '<p>
+            <label for="estAdmin_id">Administrateur?</label>
+            <input type="checkbox" name="estAdmin" id="estAdmin_id">
+            </p>'
+        ?>
         <p>
             <input type="submit" value="Envoyer"/>
         </p>

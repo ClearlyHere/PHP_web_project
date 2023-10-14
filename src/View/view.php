@@ -1,11 +1,15 @@
 <?php
+
     use App\Covoiturage\Model\HTTP\Session;
     use App\Covoiturage\Lib\MessageFlash;
+    use App\Covoiturage\Lib\ConnexionUtilisateur;
+
     $session = Session::getInstance();
 ?>
 <html lang="fr">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./../assets/css/view.css">
     <meta charset="UTF-8">
     <title><?php if (isset($pagetitle)) echo $pagetitle; ?></title>
@@ -17,14 +21,25 @@
             <li><a href="frontController.php?controller=voiture&action=readAll">Accueil voitures</a></li>
             <li><a href="frontController.php?controller=utilisateur&action=readAll">Accueil utilisateurs</a></li>
             <li><a href="frontController.php?controller=trajet&action=readAll">Accueil trajets</a></li>
-            <li class="heart"><a href="frontController.php?&controller=generic&action=formulairePreference"><img src="./../assets/images/heart.png" alt="Heart Icon"></a></li>
+            <li class="heart"><a href="frontController.php?&controller=generic&action=formulairePreference"><img
+                            src="./../assets/images/heart.png" alt="Heart Icon"></a></li>
+            <?php
+                if (ConnexionUtilisateur::estConnecte()) {
+                    $userLogin = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+
+                    echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=readOne&login=' . $userLogin .
+                '"><img src="./../assets/images/user_logo.png" alt="Happy user icon"></a></li>';
+                } else {
+                    echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=connexion">
+                <img src="./../assets/images/login.png" alt="Sad user icon"></a></li>';
+                }
+            ?>
         </ul>
     </nav>
 </header>
 <main>
     <?php
-        if (MessageFlash::contientMessage())
-        {
+        if (MessageFlash::contientMessage()) {
             echo MessageFlash::lireMessage();
         }
         if (isset($cheminVueBody)) require __DIR__ . $cheminVueBody;

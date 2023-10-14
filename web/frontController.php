@@ -2,7 +2,7 @@
 
     use App\Covoiturage\Config\ExceptionHandling;
     use App\Covoiturage\Controller\ControllerVoiture;
-    use App\Covoiturage\Lib\MotDePasse;
+    use App\Covoiturage\Model\Repository\UtilisateurRepository;
     use App\Covoiturage\Lib\PreferenceController;
 
     require_once(__DIR__ . '/../src/Lib/Psr4AutoloaderClass.php');

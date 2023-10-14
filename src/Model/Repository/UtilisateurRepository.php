@@ -26,7 +26,7 @@
 
         public function getNomsColonnes(): array
         {
-            return array('login', 'mdpHache', 'nom', 'prenom', );
+            return array('login', 'mdpHache', 'nom', 'prenom', 'estAdmin', );
         }
 
         public function Construire(array $arrayData): Utilisateur|bool
@@ -36,16 +36,22 @@
                     $arrayData['mdpHache'],
                     $arrayData['nom'],
                     $arrayData['prenom'],
+                    $arrayData['estAdmin']
                 );
         }
 
         public static function construireDepuisFormulaire(array $tableauFormulaire) : Utilisateur
         {
             $tableauFormulaire['mdpHache'] = MotDePasse::hacher($tableauFormulaire['mdpHache']);
-            $tableauConstruire = [$tableauFormulaire['login'],
+            if (isset($tableauFormulaire['estAdmin'])) $tableauFormulaire['estAdmin'] = true;
+            else $tableauFormulaire['estAdmin'] = false;
+            $tableauConstruire = [
+                $tableauFormulaire['login'],
                 $tableauFormulaire['mdpHache'],
                 $tableauFormulaire['nom'],
-                $tableauFormulaire['prenom']];
+                $tableauFormulaire['prenom'],
+                $tableauFormulaire['estAdmin'],
+                ];
             return new Utilisateur(...$tableauConstruire);
         }
 

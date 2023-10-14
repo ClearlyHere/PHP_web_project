@@ -7,35 +7,30 @@
 
     class Utilisateur extends AbstractDataObject
     {
-        // Un user contient ses 3 attributs en string
-        private string $login;
-        private string $mdpHache;
-        private string $nom;
-        private string $prenom;
+        // Méthode constructeur avec attributs définis directement
+        public function __construct(
+            private string $login,
+            private string $mdpHache,
+            private string $nom,
+            private string $prenom,
+            private bool   $estAdmin,
+        )
+        {
+        }
 
         public function formatTableau(): array
         {
+            if ($this->isEstAdmin()) $isAdmin = 1;
+            else $isAdmin = 0;
             return array(
                 "loginTag" => $this->getPrimaryKeyValue(),
                 "mdpHacheTag" => $this->getMdpHache(),
                 "nomTag" => $this->GetNom(),
                 "prenomTag" => $this->GetPrenom(),
+                "estAdminTag" => strval($isAdmin),
             );
         }
 
-        // Méthode constructeur habituel
-        public function __construct(
-            string $login,
-            string $mdpHache,
-            string $nom,
-            string $prenom,
-        )
-        {
-            $this->login = $login;
-            $this->mdpHache = $mdpHache;
-            $this->nom = $nom;
-            $this->prenom = $prenom;
-        }
 
         // Méthodes Getters et Setters
         public function getPrimaryKeyValue(): string
@@ -79,13 +74,25 @@
             $this->mdpHache = $mdpHache;
         }
 
-        /*
-Méthode __toString() pour afficher les informations d'un User en un string
-Tout en utilisant les méthodes getters
-*/
+        public function isEstAdmin(): bool
+        {
+            return $this->estAdmin;
+        }
+
+        public function setEstAdmin(bool $estAdmin): void
+        {
+            $this->estAdmin = $estAdmin;
+        }
+
+
+//      Méthode __toString() pour afficher les informations d'un User en un string
+//      Tout en utilisant les méthodes getters
         public function __toString(): string
         {
+            if ($this->isEstAdmin()) $admin = ', Admin : Oui';
+            else $admin = ', Admin : Non';
             return "Utilisateur : " . $this->getPrimaryKeyValue() .
-                ", Nom : " . $this->GetNom() . ", Prénom : " . $this->GetPrenom();
+                ", Nom : " . $this->GetNom() . ", Prénom : " . $this->GetPrenom()
+                . $admin;
         }
     }

@@ -19,6 +19,10 @@
             110 => "Cette action n'existe pas",
             111 => "Les mots de passes ne coincident pas",
             112 => "Ancien mot de passe érronée",
+            113 => "Utilisateur inexistant",
+            114 => "Mot de passe incorrecte",
+            115 => "Il semble que vous n'étiez plus connecté en session",
+            116 => "Pas la permission nécessaire pour accéder à cette page"
         ];
 
         private static function throwException($errorCode): void

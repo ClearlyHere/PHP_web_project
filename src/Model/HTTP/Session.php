@@ -2,6 +2,7 @@
 
     namespace App\Covoiturage\Model\HTTP;
     use App\Covoiturage\Config\Conf;
+    use App\Covoiturage\Lib\MessageFlash;
     use Exception;
     class Session
     {
