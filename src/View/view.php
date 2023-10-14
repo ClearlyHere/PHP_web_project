@@ -26,9 +26,13 @@
             <?php
                 if (ConnexionUtilisateur::estConnecte()) {
                     $userLogin = ConnexionUtilisateur::getLoginUtilisateurConnecte();
-
-                    echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=readOne&login=' . $userLogin .
-                '"><img src="./../assets/images/user_logo.png" alt="Happy user icon"></a></li>';
+                    if (ConnexionUtilisateur::estAdministrateur()) {
+                        echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=readOne&login=' . $userLogin .
+                            '"><img src="./../assets/images/admin_logo.png" alt="admin user icon"></a></li>';
+                    } else {
+                        echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=readOne&login=' . $userLogin .
+                            '"><img src="./../assets/images/user_logo.png" alt="Happy user icon"></a></li>';
+                    }
                 } else {
                     echo '<li class="heart"><a href="frontController.php?controller=utilisateur&action=connexion">
                 <img src="./../assets/images/login.png" alt="Sad user icon"></a></li>';
