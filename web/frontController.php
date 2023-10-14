@@ -47,4 +47,3 @@
             $controllerClassName::$action();
         }
     }
-    var_dump(MotDePasse::verifier('test', '$2y$10$oKw5Rm0VPoz4HKG.4CdLGeXrh5y6ux6RogKaLqQrW4OFVjSiXzft2'));

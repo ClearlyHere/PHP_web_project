@@ -52,23 +52,25 @@
         public static function updated(): void
         {
             try {
-                $new_utilisateur = (new UtilisateurRepository())->construireDepuisFormulaire($_GET);
-                ExceptionHandling::checkTrueValue($_GET['mdpHache'] === $_GET['mdpHacheVerif'], 111);
-                ExceptionHandling::checkTrueValue(MotDePasse::verifier($_GET['ancienMdpClair'], $new_utilisateur->getMdpHache()), 112);
                 $oldLogin = $_GET['oldLogin'];
+                $oldUtilisateur = UtilisateurRepository::withLogin($oldLogin, true);
+                $old_mdp = $oldUtilisateur->getMdpHache();
+                $new_utilisateur = (new UtilisateurRepository())::construireDepuisFormulaire($_GET);
+                ExceptionHandling::checkTrueValue($_GET['mdpHache'] === $_GET['mdpHacheVerif'], 111);
+                ExceptionHandling::checkTrueValue(MotDePasse::verifier($_GET['ancienMdpClair'], $old_mdp), 112);
                 $retour = (new UtilisateurRepository())->mettreAJour($new_utilisateur, $oldLogin);
                 ExceptionHandling::checkTrueValue($retour, 106);
                 $utilisateurs = (new UtilisateurRepository())->selectAll();
-                MessageFlash::ajouter("success", "L'utilisateur' " . $new_utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
+                MessageFlash::ajouter("success", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
                 (new ControllerUtilisateur())->afficheVue("Update utilisateur", "/list.php",
                     ["login" => $new_utilisateur->getPrimaryKeyValue(), "utilisateurs" => $utilisateurs]);
             } catch (Exception $e) {
                 if ($e->getCode() === 112) {
                     MessageFlash::ajouter("warning", "L'ancien mot de passe que vous avez saisi est érronée");
-                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/update.php");
+                    self::update($oldLogin);
                 } else if ($e->getCode() === 111) {
                     MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
-                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/update.php");
+                    self::update($oldLogin);
                 } else {
                     MessageFlash::ajouter("danger", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " n'a pas été mise à jour");
                     (new ControllerUtilisateur())->error($e);
@@ -96,7 +98,7 @@
             } catch (Exception $e) {
                 if ($e->getCode() === 111) {
                     MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
-                    (new ControllerUtilisateur())->afficheVue("Créer utilisateur", "/create.php");
+                    self::create();
                 } else {
                     MessageFlash::ajouter("danger", "L'utilisateur n'a pas pu être créé");
                     (new ControllerUtilisateur())->error($e);
@@ -116,12 +118,12 @@
                     ["utilisateurs" => $utilisateurs, "login" => $login]);
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "L'utilisateur " . $login . " n'a pas été éffacé");
-
                 (new ControllerUtilisateur())->error($e);
             }
         }
     }
 
+    // COOKIE TESTING
     //        public static function deposerCookie() : void
     //        {
     //            Cookie::enregistrer('COOKIE1', 1, 3600);

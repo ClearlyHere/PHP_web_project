@@ -49,19 +49,25 @@
             return new Utilisateur(...$tableauConstruire);
         }
 
-        public static function withLogin($login): array
+        public static function withLogin($login, bool $return_user = false): array|Utilisateur
         {
             $sql = "SELECT * FROM utilisateur WHERE login = :conducteurLoginTag";
             $values = array('conducteurLoginTag' => $login);
             $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
             $pdoStatement->execute($values);
-            return $pdoStatement->fetch(PDO::FETCH_ASSOC);
+            $array = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+            if ($return_user) {
+                return new Utilisateur(...$array);
+            }
+            else {
+                return $array;
+            }
         }
 
         public static function GetTrajetsLogin(string $login): array|null
         {
             $sql = "SELECT trajetID FROM passager INNER JOIN utilisateur
-                ON utilisateur.login = passager.identifiant WHERE utilisateur.login = :loginTag";
+                ON utilisateur.login = passager.passagerLogin WHERE utilisateur.login = :loginTag";
             $values = array('loginTag' => $login);
             $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
             $pdoStatement->execute($values);
