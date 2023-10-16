@@ -7,11 +7,8 @@
     use App\Covoiturage\Lib\MessageFlash;
     use App\Covoiturage\Lib\MotDePasse;
     use App\Covoiturage\Model\DataObject\Utilisateur;
-    use App\Covoiturage\Model\HTTP\Session;
     use App\Covoiturage\Model\Repository\UtilisateurRepository;
-    use Cassandra\Cluster\Builder;
     use Exception;
-    use http\Message;
 
     class ControllerUtilisateur extends ControllerGeneric
     {

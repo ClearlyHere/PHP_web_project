@@ -15,4 +15,3 @@
         echo "</ul>";
         echo '<br><a href=\'frontController.php?controller=voiture&action=create \'>Créer une voiture</a> ';
     }
-?>
