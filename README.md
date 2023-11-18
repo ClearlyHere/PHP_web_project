@@ -27,3 +27,7 @@ Attempt of logging into a wrong user :
 Success when logging in :
 
 ![Alt text](/assets/images/screenshots/successLoginExample.png "Success login")
+
+Error page :
+
+![Alt text](/assets/images/screenshots/errorScreenshot.png "Error page")
