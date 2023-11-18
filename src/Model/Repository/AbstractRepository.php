@@ -10,7 +10,41 @@
 
     abstract class AbstractRepository
     {
+        protected abstract function getPrimaryKeyColumn(): string;
 
+        protected abstract function getNomTable(): string;
+
+        protected abstract function Construire(array $arrayData): AbstractDataObject|bool;
+    
+        protected abstract function getNomsColonnes(): array;
+
+        // Get SQL Columns of corresponding repository, set tagmode to true if you want the tag version for inputs
+        public function getSQLColumns(bool $tagMode = false) : string
+        {
+            $arrayColonnes = $this->getNomsColonnes();
+            if ($tagMode) {
+                $setColonnes = '';
+                foreach ($arrayColonnes as $colonne) {
+                    $setColonnes .=  $colonne . ' = :' . $colonne . 'Tag, ';
+                }
+                return rtrim($setColonnes, ', ');
+            }
+
+            else {
+                $return_colonnes = implode(', ', $arrayColonnes);
+                return rtrim($return_colonnes, ', ');
+            }
+        }
+
+        private function getSQLTags() : string
+        {
+            $arrayColonnes = $this->getNomsColonnes();
+            $setColonnes = '';
+            foreach ($arrayColonnes as $colonne) {
+                $setColonnes .= ':' . $colonne . 'Tag, ';
+            }
+            return rtrim($setColonnes, ', ');
+        }
 
         /**
          * @return AbstractDataObject[]
@@ -103,44 +137,4 @@
                 return $e->getMessage();
             }
         }
-
-        /*
-        I love jésus he is for real the love of my life my cutie potatootie pookie bear kawaii desu
-        I HAVE A VIDEO THAT I WATCH IN MY BED IT REPLAYS IN MY AYI AYI HEAD YOU SAID YOU LOVE ME WE LAUGH TOGETHER EVERY NIGHT*/
-
-        // Get SQL Columns of corresponding repository, set tagmode to true if you want the tag version for inputs
-        public function getSQLColumns(bool $tagMode = false) : string
-        {
-            $arrayColonnes = $this->getNomsColonnes();
-            if ($tagMode) {
-                $setColonnes = '';
-                foreach ($arrayColonnes as $colonne) {
-                    $setColonnes .=  $colonne . ' = :' . $colonne . 'Tag, ';
-                }
-                return rtrim($setColonnes, ', ');
-            }
-
-            else {
-                $return_colonnes = implode(', ', $arrayColonnes);
-                return rtrim($return_colonnes, ', ');
-            }
-        }
-
-        private function getSQLTags() : string
-        {
-            $arrayColonnes = $this->getNomsColonnes();
-            $setColonnes = '';
-            foreach ($arrayColonnes as $colonne) {
-                $setColonnes .= ':' . $colonne . 'Tag, ';
-            }
-            return rtrim($setColonnes, ', ');
-        }
-
-        protected abstract function getPrimaryKeyColumn(): string;
-
-        protected abstract function getNomTable(): string;
-
-        protected abstract function Construire(array $arrayData): AbstractDataObject|bool;
-
-        protected abstract function getNomsColonnes(): array;
     }
