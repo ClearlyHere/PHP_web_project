@@ -9,3 +9,19 @@ Trying to adopt an MVC approach into this project for the first time and learnin
 - OOP and MVC structure for a more flexible codebase, class abstractions
 - Customized error messages
 - Implement cookies and sessions
+
+Main page displaying available data
+
+![Alt text](/assets/images/screenshots/mainScreenshot.png "Main page")
+
+Page for the details of a specific data
+
+![Alt text](/assets/images/screenshots/detailsScreenshot.png "Details page")
+
+Attempt of logging into a wrong user
+
+![Alt text](/assets/images/screenshots/failLoginExample.png "Fail login")
+
+Success when logging in
+
+![Alt text](/assets/images/screenshots/successLoginExample.png "Success login")
