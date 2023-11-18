@@ -10,18 +10,20 @@ Trying to adopt an MVC approach into this project for the first time and learnin
 - Customized error messages
 - Implement cookies and sessions
 
-Main page displaying available data
+Here are a few examples.
+
+Main page displaying available data :
 
 ![Alt text](/assets/images/screenshots/mainScreenshot.png "Main page")
 
-Page for the details of a specific data
+Page for the details of a specific data :
 
 ![Alt text](/assets/images/screenshots/detailsScreenshot.png "Details page")
 
-Attempt of logging into a wrong user
+Attempt of logging into a wrong user :
 
 ![Alt text](/assets/images/screenshots/failLoginExample.png "Fail login")
 
-Success when logging in
+Success when logging in :
 
 ![Alt text](/assets/images/screenshots/successLoginExample.png "Success login")
