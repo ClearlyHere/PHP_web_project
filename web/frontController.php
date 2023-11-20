@@ -3,11 +3,8 @@
     use App\Covoiturage\Config\ExceptionHandling;
     use App\Covoiturage\Controller\ControllerVoiture;
     use App\Covoiturage\Lib\PreferenceController;
-    require_once(__DIR__ . '/../src/Lib/Psr4AutoloaderClass.php');
 
-    $loader = new App\Covoiturage\Lib\Psr4AutoloaderClass();
-    $loader->addNamespace('App\Covoiturage', __DIR__ . '/../src');
-    $loader->register();
+    require_once "autoloaderInclude.php";
 
     if (isset($_GET['controller'])) {
         $controller = $_GET['controller'];

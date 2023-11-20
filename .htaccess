@@ -1,1 +1,2 @@
 # Require all denied
+ErrorDocument 404 /R301/TD8/src/View/404.php

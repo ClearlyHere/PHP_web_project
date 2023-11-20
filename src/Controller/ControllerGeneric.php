@@ -34,10 +34,8 @@
 
         public function error(Exception $e): void
         {
-            $errorCode = $e->getCode();
-            $errorMessage = ExceptionHandling::getErrorMessage($errorCode);
             $this->afficheVue("Erreur", "/../error.php",
-                ["errorMessage" => $errorMessage]);
+                ["exception" => $e]);
         }
 
         protected function getBodyFolder(): string

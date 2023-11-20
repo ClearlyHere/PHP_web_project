@@ -10,7 +10,6 @@
                 ' <a href=\'frontController.php?controller=utilisateur&action=readOne&login=' . $urlLogin . ' \'>Détails</a> ';
         }
         echo "</ul>";
-        echo '<br><a href=\'frontController.php?controller=utilisateur&action=create \'>Créer un utilisateur</a><br>';
 
         if (isset($cookies) && is_array($cookies)) {
             echo "<br>";

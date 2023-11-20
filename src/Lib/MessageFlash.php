@@ -26,11 +26,11 @@
         public static function lireMessage() : string|bool
         {
             if ($session = Session::getInstance()){
-                $cookieData = $session->lire(static::$cleFlash);
+                $cookieSession = $session->lire(static::$cleFlash);
 
-                if (!(is_null($cookieData))) {
+                if (!(is_null($cookieSession))) {
                     $session->supprimer(static::$cleFlash);
-                    $messageArray = unserialize($cookieData);
+                    $messageArray = unserialize($cookieSession);
                     return self::conversionMessageHTML($messageArray);
                 }
                 else return false;

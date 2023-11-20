@@ -1,5 +1,4 @@
 <?php
-
     use App\Covoiturage\Model\HTTP\Session;
     use App\Covoiturage\Lib\MessageFlash;
     use App\Covoiturage\Lib\ConnexionUtilisateur;

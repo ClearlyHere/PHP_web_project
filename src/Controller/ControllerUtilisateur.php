@@ -94,6 +94,12 @@
                 // On vérifie que la sauvegarde s'est bien passée
                 ExceptionHandling::checkTrueValue($retour, 106);
 
+                $newLogin = $_GET['login'];
+                if ($newLogin != $oldLogin && $oldLogin == ConnexionUtilisateur::getLoginUtilisateurConnecte()) {
+                    ConnexionUtilisateur::deconnecter();
+                    ConnexionUtilisateur::connecter($newLogin);
+                }
+
                 MessageFlash::ajouter("success", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
                 self::readAll();
             } catch (Exception $e) {
@@ -210,31 +216,3 @@
             }
         }
     }
-
-    // COOKIE TESTING
-    //        public static function deposerCookie() : void
-    //        {
-    //            Cookie::enregistrer('COOKIE1', 1, 3600);
-    //            Cookie::enregistrer('COOKIE2', 2, 3600);
-    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-    //                ["utilisateurs" => $utilisateurs]);
-    //        }
-    //
-    //        public static function lireCookie() : void
-    //        {
-    //            $cookies = [Cookie::lire('COOKIE1'),Cookie::lire('COOKIE2')];
-    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-    //                ["utilisateurs" => $utilisateurs, "cookies" => $cookies]);
-    //        }
-    //
-    //        public static function supprimerCookie() : void
-    //        {
-    //            Cookie::effacerCookie('COOKIE1');
-    //            Cookie::effacerCookie('COOKIE2');
-    //            $utilisateurs = (new UtilisateurRepository())->selectAll(); // Appel au modèle pour gérer
-    //            (new ControllerUtilisateur())->afficheVue('Liste de Utilisateurs', '/list.php',
-    //                ["utilisateurs" => $utilisateurs]);
-    //        }
-    //    }

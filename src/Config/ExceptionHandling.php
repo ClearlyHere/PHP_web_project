@@ -37,7 +37,7 @@
 
         public static function getErrorMessage(int $errorCode): string
         {
-            return "Erreur $errorCode : " . self::$errorMessages[$errorCode] ?? 'Erreur inconnue';
+            return self::$errorMessages[$errorCode] ?? 'Erreur inconnue';
         }
 
         // INVALID ARGUMENT EXCEPTIONS HANDLING DANS LES 100

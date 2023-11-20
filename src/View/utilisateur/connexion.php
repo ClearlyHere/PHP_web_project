@@ -16,4 +16,5 @@
         </p>
     </fieldset>
 </form>
+<a href="frontController.php?controller=utilisateur&action=create ">Créer un utilisateur</a>
 <a href="frontController.php?controller=utilisateur&action=readAll">Retour</a>
