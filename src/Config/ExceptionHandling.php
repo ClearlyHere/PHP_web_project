@@ -22,7 +22,8 @@
             113 => "Utilisateur inexistant",
             114 => "Mot de passe incorrecte",
             115 => "Il semble que vous n'étiez plus connecté en session",
-            116 => "Pas la permission nécessaire pour accéder à cette page"
+            116 => "Pas la permission nécessaire pour accéder à cette page",
+            404 => "Le fichier ou l'URL que vous avez saisi semble être indisponible",
         ];
 
         private static function throwException($errorCode): void
