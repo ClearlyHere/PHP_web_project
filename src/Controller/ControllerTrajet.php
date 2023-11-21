@@ -57,11 +57,8 @@
                 $nouveauTrajet = (new TrajetRepository())->Construire($GET_Array);
                 $retour = (new TrajetRepository())->Sauvegarder($nouveauTrajet);
                 ExceptionHandling::checkTrueValue(is_bool($retour), 106);
-                $trajets = (new TrajetRepository())->selectAll();
                 MessageFlash::ajouter("success", "Le trajet " . $nouveauTrajet->getPrimaryKeyValue() . " a bien été créé!");
-
-                (new ControllerTrajet())->afficheVue("Trajet créé", "/list.php",
-                    ['trajets' => $trajets, 'trajet' => $nouveauTrajet]);
+                header("Location: index.php?controller=trajet");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "Le trajet n'a pas été créé!");
 
@@ -74,10 +71,8 @@
             try {
                 $bool = (new TrajetRepository())->effacer($id);
                 ExceptionHandling::checkTrueValue(is_bool($bool), 106);
-                $trajets = (new TrajetRepository())->selectAll(); // Appel au modèle pour gérer
                 MessageFlash::ajouter("success", "Le trajet $id a bien été éffacé!");
-                (new ControllerTrajet())->afficheVue('Liste de Trajets', '/list.php',
-                    ["trajets" => $trajets, "id" => $id]);
+                header("Location: index.php?controller=trajet");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "Le trajet $id n'a pas été éffacé!");
                 (new ControllerTrajet())->error($e);
@@ -102,10 +97,8 @@
                 $oldId = $_GET['oldId'];
                 $retour = (new TrajetRepository())->mettreAJour($nouveau_trajet, $oldId);
                 ExceptionHandling::checkTrueValue($retour, 106);
-                $trajets = (new TrajetRepository())->selectAll(); // Appel au modèle pour gérer
                 MessageFlash::ajouter("success", "Le trajet " . $nouveau_trajet->getPrimaryKeyValue(). " a bien été mise à jour!" );
-                (new ControllerTrajet())->afficheVue('Liste de Trajets', '/list.php',
-                    ["trajets" => $trajets, "id" => $oldId]);
+                header("Location: index.php?controller=trajet");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "Le trajet " . $nouveau_trajet->getPrimaryKeyValue(). " n'a pas été mise à jour" );
                 (new ControllerTrajet())->error($e);

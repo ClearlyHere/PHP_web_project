@@ -53,10 +53,8 @@
                 $nouvelle_voiture = (new VoitureRepository())->Construire($_GET);
                 $retour = (new VoitureRepository())->Sauvegarder($nouvelle_voiture);
                 ExceptionHandling::checkTrueValue(is_bool($retour), 106);
-                $voitures = (new VoitureRepository())->selectAll();
                 MessageFlash::ajouter("success", "La voiture " . $nouvelle_voiture->getPrimaryKeyValue() . " a bien été créé!" );
-                (new ControllerVoiture())->afficheVue("Voiture créé", "/list.php",
-                    ["voitures" => $voitures, "immat" => $nouvelle_voiture->getPrimaryKeyValue()]);
+                header("Location: index.php?controller=voiture");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "Votre voiture n'a pas pu être créé!" );
                 (new ControllerVoiture())->error($e);
@@ -68,10 +66,8 @@
             try {
                 $bool = (new VoitureRepository())->effacer($immatriculation);
                 ExceptionHandling::checkTrueValue(is_bool($bool), 106);
-                $voitures = (new VoitureRepository())->selectAll();
                 MessageFlash::ajouter("success", "La voiture " . $immatriculation. " a bien été éffacée!" );
-                (new ControllerVoiture())->afficheVue("Voiture éffacé", "/list.php",
-                    ["voitures" => $voitures, "immat" => $immatriculation]);
+                header("Location: index.php?controller=voiture");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "La voiture " . $immatriculation. " n'a pas été éffacé" );
                 (new ControllerVoiture())->error($e);
@@ -102,11 +98,8 @@
                 $retour = (new VoitureRepository())->mettreAJour($nouvelle_voiture, $oldImmat);
                 ExceptionHandling::checkTrueValue($retour, 106);
 
-                $voitures = (new VoitureRepository())->selectAll();
                 MessageFlash::ajouter("success", "La voiture " . $nouvelle_voiture->getPrimaryKeyValue(). " a bien été mise à jour!" );
-                (new ControllerVoiture())->afficheVue("Update voiture", "/list.php",
-                    ["immat" => $nouvelle_voiture->getPrimaryKeyValue(), "voitures" => $voitures]);
-
+                header("Location: index.php?controller=voiture");
             } catch (Exception $e) {
                 MessageFlash::ajouter("danger", "La voiture " . $nouvelle_voiture->getPrimaryKeyValue(). " n'a pas été mise à jour" );
                 (new ControllerVoiture())->error($e);

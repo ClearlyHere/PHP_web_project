@@ -12,7 +12,7 @@
 
     class ControllerUtilisateur extends ControllerGeneric
     {
-        private static string $utilisteurClass = 'App\Covoiturage\Model\DataObject\Utilisateur';
+        private static string $utilisateurClass = 'App\Covoiturage\Model\DataObject\Utilisateur';
 
 
         protected function getBodyFolder(): string
@@ -36,13 +36,13 @@
         {
             try {
                 $retour = (new UtilisateurRepository())->select($login);
-                ExceptionHandling::checkInstanceClass($retour, static::$utilisteurClass, 107);
+                ExceptionHandling::checkInstanceClass($retour, static::$utilisateurClass, 107);
                 (new ControllerUtilisateur())->afficheVue('Utilisateur', '/detail.php',
                     ["utilisateur" => $retour]);
             } catch (Exception $e) {
                 if ($e->getCode() == 107) {
                     MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
-                    self::readAll();
+                    header("Location: index.php?controller=utilisateur");
                 } else {
                     MessageFlash::ajouter("danger", "Erreur durant la lecture de l'utilisateur");
                     (new ControllerUtilisateur())->error($e);
@@ -64,7 +64,7 @@
                 } else {
                     MessageFlash::ajouter('danger', "Une erreur en accédant à la mise à jour de " . $login);
                 }
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             }
         }
 
@@ -105,17 +105,18 @@
                 $newLogin = $_GET['login'];
                 if ($newLogin != $oldLogin
                     && $oldLogin == ConnexionUtilisateur::getLoginUtilisateurConnecte()
-                    && $newLogin != '') {
+                    && $newLogin != '')
+                {
                     ConnexionUtilisateur::deconnecter();
                     ConnexionUtilisateur::connecter($newLogin);
                 }
 
                 MessageFlash::ajouter("success", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 116) {
                     MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
-                    self::readAll();
+                    header("Location: index.php?controller=utilisateur");
                 } else if ($e->getCode() === 112) {
                     MessageFlash::ajouter("warning", "L'ancien mot de passe que vous avez saisi est érronée");
                     self::update($oldLogin);
@@ -143,7 +144,7 @@
                 } else {
                     MessageFlash::ajouter('danger', "Une erreur en accédant à la mise à jour de " . $login);
                 }
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             }
         }
 
@@ -163,8 +164,8 @@
 
                 // On modifie les données de l'utilisateur
                 $login = $_GET['login'] ?? null;
-                $prenom = $_GET['nom'] ?? null;
-                $nom = $_GET['prenom'] ?? null;
+                $prenom = $_GET['prenom'] ?? null;
+                $nom = $_GET['nom'] ?? null;
                 if (!is_null($login) && $login != '') $utilisateur->SetLogin($login);
                 if (!is_null($prenom) && $prenom != '') $utilisateur->SetPrenom($prenom);
                 if (!is_null($nom) && $nom != '') $utilisateur->SetNom($nom);
@@ -179,11 +180,11 @@
                 }
 
                 MessageFlash::ajouter("success", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 116) {
                     MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
-                    self::readAll();
+                    header("Location: index.php?controller=utilisateur");
                 } else if ($e->getCode() === 112) {
                     MessageFlash::ajouter("warning", "L'ancien mot de passe que vous avez saisi est érronée");
                     self::update($oldLogin);
@@ -215,7 +216,7 @@
                 if (!ConnexionUtilisateur::estConnecte()) {
                     ConnexionUtilisateur::connecter($nouvel_utilisateur->getPrimaryKeyValue());
                 }
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 111) {
                     MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
@@ -234,16 +235,15 @@
                     || ConnexionUtilisateur::estAdministrateur(), 116);
                 $bool = (new UtilisateurRepository())->effacer($login);
                 ExceptionHandling::checkTrueValue(is_bool($bool), 106);
-                $utilisateurs = (new UtilisateurRepository())->selectAll();
                 if (ConnexionUtilisateur::getLoginUtilisateurConnecte() === $login) {
                     ConnexionUtilisateur::deconnecter();
                 }
                 MessageFlash::ajouter("success", "L'utilisateur " . $login . " a bien été éffacée!");
-                header("Location: index.php");
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 116) {
                     MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
-                    self::readAll();
+                    header("Location: index.php?controller=utilisateur");
                 } else {
                     MessageFlash::ajouter("danger", "L'utilisateur " . $login . " n'a pas été éffacé");
                     (new ControllerUtilisateur())->error($e);
@@ -265,7 +265,7 @@
                 ExceptionHandling::checkTrueValue(MotDePasse::verifier($mdpClair, $user->getMdpHache()), 114);
                 ConnexionUtilisateur::connecter($user->getPrimaryKeyValue());
                 MessageFlash::ajouter("success", "Bienvenue, " . $user->getPrimaryKeyValue() . '!');
-                header("Location: index.php");
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 113) {
                     MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
@@ -286,14 +286,14 @@
                 ExceptionHandling::checkTrueValue(ConnexionUtilisateur::estConnecte(), 115);
                 MessageFlash::ajouter("info", 'Vous vous êtes déconnecté.');
                 ConnexionUtilisateur::deconnecter();
-                header("Location: index.php");
+                header("Location: index.php?controller=utilisateur");
             } catch (Exception $e) {
                 if ($e->getCode() === 115) {
                     MessageFlash::ajouter('warning', "Vous n'êtes plus connecté");
                 } else {
                     MessageFlash::ajouter('danger', "Erreur durant la déconnexion");
                 }
-                self::readAll();
+                header("Location: index.php?controller=utilisateur");
             }
         }
     }
