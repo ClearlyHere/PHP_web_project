@@ -10,7 +10,7 @@
         echo "<p>Votre préférence actuelle : " . PreferenceController::lire() . "</p>";
     }
 ?>
-<form method="GET" action="frontController.php">
+<form method="GET" action="index.php">
     <input type="hidden" name="controller" value="generic"/>
     <input type="hidden" name="action" value="enregistrerPreference"/>
     <fieldset>
@@ -24,4 +24,4 @@
         <p><br><input type="submit" value="Envoyer"/></p>
     </fieldset>
 </form>
-<a href="frontController.php">Retour</a>
+<a href="index.php">Retour</a>

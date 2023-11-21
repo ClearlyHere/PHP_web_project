@@ -11,4 +11,4 @@
             "Conducteur : " . htmlspecialchars($trajet->getLoginConducteur()) . '</p><br>';
     }
     ?>
-<a href="frontController.php?controller=trajet&action=readAll">Retour</a>
+<a href="index.php?controller=trajet&action=readAll">Retour</a>

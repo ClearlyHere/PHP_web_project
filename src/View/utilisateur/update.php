@@ -1,5 +1,5 @@
 <?php if (isset($utilisateur)) ?>
-<form method="GET" action="frontController.php">
+<form method="GET" action="index.php">
     <input type="hidden" name="controller" value="utilisateur"/>
     <input type="hidden" name="action" value="updated"/>
     <input type="hidden" name="oldLogin"
@@ -48,4 +48,4 @@
         </p>
     </fieldset>
 </form>
-<a href="frontController.php?controller=utilisateur&action=readAll">Retour</a>
+<a href="index.php?controller=utilisateur&action=readAll">Retour</a>

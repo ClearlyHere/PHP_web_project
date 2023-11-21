@@ -8,4 +8,4 @@
     } else echo "<p>Nous avons trouvé une erreur inconnue durant votre requête</p>";
 ?>
 <br>
-<a href="frontController.php?controller=utilisateur&action=readAll">Retour</a>
+<a href="index.php?controller=utilisateur&action=readAll">Retour</a>

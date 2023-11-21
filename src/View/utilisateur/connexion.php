@@ -1,4 +1,4 @@
-<form method="GET" action="frontController.php">
+<form method="GET" action="index.php">
     <input type="hidden" name="controller" value="utilisateur"/>
     <input type="hidden" name="action" value="connected"/>
     <fieldset>
@@ -16,5 +16,5 @@
         </p>
     </fieldset>
 </form>
-<a href="frontController.php?controller=utilisateur&action=create ">Créer un utilisateur</a>
-<a href="frontController.php?controller=utilisateur&action=readAll">Retour</a>
+<a href="index.php?controller=utilisateur&action=create ">Créer un utilisateur</a>
+<a href="index.php?controller=utilisateur&action=readAll">Retour</a>

@@ -4,7 +4,7 @@
     use App\Covoiturage\Controller\ControllerVoiture;
     use App\Covoiturage\Lib\PreferenceController;
 
-    require_once "./web/autoloaderInclude.php";
+    require_once "autoloaderInclude.php";
 
     if (isset($_GET['controller'])) {
         $controller = $_GET['controller'];

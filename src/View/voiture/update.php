@@ -1,4 +1,4 @@
-<form method="GET" action="frontController.php">
+<form method="GET" action="index.php">
     <input type="hidden" name="controller" value="voiture"/>
     <input type="hidden" name="action" value="updated"/>
     <input type="hidden" name="oldImmat" value="<?php if (isset($voiture)) echo $voiture->getPrimaryKeyValue(); ?>">
@@ -25,4 +25,4 @@
         </p>
     </fieldset>
 </form>
-<a href="frontController.php?controller=voiture&action=readAll">Retour</a>
+<a href="index.php?controller=voiture&action=readAll">Retour</a>

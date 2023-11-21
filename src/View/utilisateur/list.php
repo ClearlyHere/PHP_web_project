@@ -7,7 +7,7 @@
             $stringlogin = htmlspecialchars($login);
             $urlLogin = rawurlencode($login);
             echo '<li><p> Utilisateur avec login : ' . $stringlogin .
-                ' <a href=\'frontController.php?controller=utilisateur&action=readOne&login=' . $urlLogin . ' \'>Détails</a> ';
+                ' <a href=\'index.php?controller=utilisateur&action=readOne&login=' . $urlLogin . ' \'>Détails</a> ';
         }
         echo "</ul>";
 
