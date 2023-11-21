@@ -1,6 +1,6 @@
 <form method="GET" action="index.php">
     <input type="hidden" name="controller" value="utilisateur"/>
-    <input type="hidden" name="action" value="updated"/>
+    <input type="hidden" name="action" value="updatedAdmin"/>
     <input type="hidden" name="oldLogin"
            value="<?php if (isset($utilisateur)) echo $utilisateur->getPrimaryKeyValue(); ?>">
     <fieldset>
@@ -9,18 +9,6 @@
             <label for="login_id">Login <?php if (isset($utilisateur)) echo $utilisateur->getPrimaryKeyValue() ?></label>
             :
             <input type="text" placeholder="johndoe" name="login" id="login_id"/>
-        </p>
-        <p>
-            <label for="mdp_id">Mot de passe&#42; :</label>
-            <input type="password" placeholder="**********" name="ancienMdpClair" id="mdp_id">
-        </p>
-        <p>
-            <label for="mdp_id">Nouveau mot de passe&#42; :</label>
-            <input type="password" placeholder="**********" name="mdpHache" id="mdp_id">
-        </p>
-        <p>
-            <label for="mdp2_id">Vérification du nouveau mot de passe&#42; :</label>
-            <input type="password" placeholder="**********" name="mdpHacheVerif" id="mdp2_id">
         </p>
         <p>
             <label for="nom_id">Nom <?php if (isset($utilisateur)) echo $utilisateur->GetNom() ?></label> :

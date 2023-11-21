@@ -53,8 +53,8 @@
         public static function update($login): void
         {
             try {
-                ExceptionHandling::checkTrueValue($login === ConnexionUtilisateur::getLoginUtilisateurConnecte()
-                    || ConnexionUtilisateur::estAdministrateur(), 116);
+                ExceptionHandling::checkTrueValue($login === ConnexionUtilisateur::getLoginUtilisateurConnecte(),
+                    116);
                 $utilisateur = (new UtilisateurRepository())->select($login);
                 (new ControllerUtilisateur())->afficheVue("Update utilisateur", "/update.php",
                     ["utilisateur" => $utilisateur]);
@@ -73,34 +73,44 @@
             try {
                 $oldLogin = $_GET['oldLogin'];
                 ExceptionHandling::checkTrueValue($oldLogin === ConnexionUtilisateur::getLoginUtilisateurConnecte()
-                    || ConnexionUtilisateur::estAdministrateur(), 116);
+                ,116);
                 // Création de l'ancien utilisateur à partir du login
-                $oldUtilisateur = UtilisateurRepository::withLogin($oldLogin, true);
+                $utilisateur = UtilisateurRepository::withLogin($oldLogin, true);
                 // On vérifie que celui-ci existe dans la base de données
-                ExceptionHandling::checkTrueValue($oldUtilisateur instanceof Utilisateur, 113);
+                ExceptionHandling::checkTrueValue($utilisateur instanceof Utilisateur, 113);
 
                 // On obtient son mot de pass haché
-                $old_mdp = $oldUtilisateur->getMdpHache();
+                $old_mdp = $utilisateur->getMdpHache();
                 // On créé un nouvel utilisateur avec les nouvelles données
                 if (!ConnexionUtilisateur::estAdministrateur()) $_GET['estAdmin'] = null;
-                $new_utilisateur = (new UtilisateurRepository())::construireDepuisFormulaire($_GET);
                 // On vérifier que les mots de passes saisies sont égaux
                 ExceptionHandling::checkTrueValue($_GET['mdpHache'] === $_GET['mdpHacheVerif'], 111);
                 // On vérifie que le mot de passe ancien est correct
                 ExceptionHandling::checkTrueValue(MotDePasse::verifier($_GET['ancienMdpClair'], $old_mdp), 112);
 
+                $login = $_GET['login'] ?? null;
+                $prenom = $_GET['nom'] ?? null;
+                $nom = $_GET['prenom'] ?? null;
+                $mdp = $_GET['mdpHache'] ?? null;
+                if (!is_null($login) && $login != '') $utilisateur->SetLogin($login);
+                if (!is_null($prenom) && $prenom != '') $utilisateur->SetPrenom($prenom);
+                if (!is_null($nom) && $nom != '') $utilisateur->SetNom($nom);
+                if (!is_null($mdp) && $mdp != '') $utilisateur->setMdpHache($mdp);
+
                 // On sauvegarde les nouvelles données sur l'utilisateur
-                $retour = (new UtilisateurRepository())->mettreAJour($new_utilisateur, $oldLogin);
+                $retour = (new UtilisateurRepository())->mettreAJour($utilisateur, $oldLogin);
                 // On vérifie que la sauvegarde s'est bien passée
                 ExceptionHandling::checkTrueValue($retour, 106);
 
                 $newLogin = $_GET['login'];
-                if ($newLogin != $oldLogin && $oldLogin == ConnexionUtilisateur::getLoginUtilisateurConnecte()) {
+                if ($newLogin != $oldLogin
+                    && $oldLogin == ConnexionUtilisateur::getLoginUtilisateurConnecte()
+                    && $newLogin != '') {
                     ConnexionUtilisateur::deconnecter();
                     ConnexionUtilisateur::connecter($newLogin);
                 }
 
-                MessageFlash::ajouter("success", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
+                MessageFlash::ajouter("success", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
                 self::readAll();
             } catch (Exception $e) {
                 if ($e->getCode() === 116) {
@@ -113,7 +123,75 @@
                     MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
                     self::update($oldLogin);
                 } else {
-                    MessageFlash::ajouter("danger", "L'utilisateur " . $new_utilisateur->getPrimaryKeyValue() . " n'a pas été mise à jour");
+                    MessageFlash::ajouter("danger", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " n'a pas été mise à jour");
+                    (new ControllerUtilisateur())->error($e);
+                }
+            }
+        }
+
+        public static function updateAdmin($login): void
+        {
+            try {
+                ExceptionHandling::checkTrueValue($login === ConnexionUtilisateur::getLoginUtilisateurConnecte()
+                    || ConnexionUtilisateur::estAdministrateur(), 116);
+                $utilisateur = (new UtilisateurRepository())->select($login);
+                (new ControllerUtilisateur())->afficheVue("Update utilisateur", "/updateAdmin.php",
+                    ["utilisateur" => $utilisateur]);
+            } catch (Exception $e) {
+                if ($e->getCode() === 116) {
+                    MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
+                } else {
+                    MessageFlash::ajouter('danger', "Une erreur en accédant à la mise à jour de " . $login);
+                }
+                self::readAll();
+            }
+        }
+
+        public static function updatedAdmin(): void
+        {
+            try {
+                $oldLogin = $_GET['oldLogin'];
+                ExceptionHandling::checkTrueValue($oldLogin === ConnexionUtilisateur::getLoginUtilisateurConnecte()
+                    || ConnexionUtilisateur::estAdministrateur(), 116);
+
+                // Création de l'ancien utilisateur à partir du login
+                $utilisateur = UtilisateurRepository::withLogin($oldLogin, true);
+                // On vérifie que celui-ci existe dans la base de données
+                ExceptionHandling::checkTrueValue($utilisateur instanceof Utilisateur, 113);
+
+                if (!ConnexionUtilisateur::estAdministrateur()) $_GET['estAdmin'] = null;
+
+                // On modifie les données de l'utilisateur
+                $login = $_GET['login'] ?? null;
+                $prenom = $_GET['nom'] ?? null;
+                $nom = $_GET['prenom'] ?? null;
+                if (!is_null($login) && $login != '') $utilisateur->SetLogin($login);
+                if (!is_null($prenom) && $prenom != '') $utilisateur->SetPrenom($prenom);
+                if (!is_null($nom) && $nom != '') $utilisateur->SetNom($nom);
+                // On sauvegarde les nouvelles données sur l'utilisateur
+                $retour = (new UtilisateurRepository())->mettreAJour($utilisateur, $oldLogin);
+                // On vérifie que la sauvegarde s'est bien passée
+                ExceptionHandling::checkTrueValue($retour, 106);
+
+                if ($login != $oldLogin && $oldLogin == ConnexionUtilisateur::getLoginUtilisateurConnecte()) {
+                    ConnexionUtilisateur::deconnecter();
+                    ConnexionUtilisateur::connecter($login);
+                }
+
+                MessageFlash::ajouter("success", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " a bien été mise à jour!");
+                self::readAll();
+            } catch (Exception $e) {
+                if ($e->getCode() === 116) {
+                    MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
+                    self::readAll();
+                } else if ($e->getCode() === 112) {
+                    MessageFlash::ajouter("warning", "L'ancien mot de passe que vous avez saisi est érronée");
+                    self::update($oldLogin);
+                } else if ($e->getCode() === 111) {
+                    MessageFlash::ajouter("warning", "Vérifiez que votre mot de passe soit correcte sur les 2 champs");
+                    self::update($oldLogin);
+                } else {
+                    MessageFlash::ajouter("danger", "L'utilisateur " . $utilisateur->getPrimaryKeyValue() . " n'a pas été mise à jour");
                     (new ControllerUtilisateur())->error($e);
                 }
             }
@@ -132,7 +210,11 @@
                 $nouvel_utilisateur = (new UtilisateurRepository())->construireDepuisFormulaire($_GET);
                 $retour = (new UtilisateurRepository())->Sauvegarder($nouvel_utilisateur);
                 ExceptionHandling::checkTrueValue(is_bool($retour), 106);
-                MessageFlash::ajouter("success", "L'utilisateur " . $nouvel_utilisateur->getPrimaryKeyValue() . " a bien été créé!");
+                MessageFlash::ajouter("success", "L'utilisateur "
+                    . $nouvel_utilisateur->getPrimaryKeyValue() . " a bien été créé!");
+                if (!ConnexionUtilisateur::estConnecte()) {
+                    ConnexionUtilisateur::connecter($nouvel_utilisateur->getPrimaryKeyValue());
+                }
                 self::readAll();
             } catch (Exception $e) {
                 if ($e->getCode() === 111) {
@@ -157,8 +239,7 @@
                     ConnexionUtilisateur::deconnecter();
                 }
                 MessageFlash::ajouter("success", "L'utilisateur " . $login . " a bien été éffacée!");
-                (new ControllerUtilisateur())->afficheVue("Utilisateur éffacé", "/list.php",
-                    ["utilisateurs" => $utilisateurs, "login" => $login]);
+                header("Location: index.php");
             } catch (Exception $e) {
                 if ($e->getCode() === 116) {
                     MessageFlash::ajouter('warning', "Vous n'avez pas les droits d'accéder à cette page");
@@ -184,7 +265,7 @@
                 ExceptionHandling::checkTrueValue(MotDePasse::verifier($mdpClair, $user->getMdpHache()), 114);
                 ConnexionUtilisateur::connecter($user->getPrimaryKeyValue());
                 MessageFlash::ajouter("success", "Bienvenue, " . $user->getPrimaryKeyValue() . '!');
-                self::readAll();
+                header("Location: index.php");
             } catch (Exception $e) {
                 if ($e->getCode() === 113) {
                     MessageFlash::ajouter("warning", "Cet utilisateur n'existe pas");
@@ -205,7 +286,7 @@
                 ExceptionHandling::checkTrueValue(ConnexionUtilisateur::estConnecte(), 115);
                 MessageFlash::ajouter("info", 'Vous vous êtes déconnecté.');
                 ConnexionUtilisateur::deconnecter();
-                self::readAll();
+                header("Location: index.php");
             } catch (Exception $e) {
                 if ($e->getCode() === 115) {
                     MessageFlash::ajouter('warning', "Vous n'êtes plus connecté");
