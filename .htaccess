@@ -1,2 +1,3 @@
-require all granted
-ErrorDocument 404 /R301/TD8/src/View/404.php
+require all denied
+ErrorDocument 404 /R301/TD8/src/View/httpErrors/404.php
+ErrorDocument 403 /R301/TD8/src/View/httpErrors/403.php

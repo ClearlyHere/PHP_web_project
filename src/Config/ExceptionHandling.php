@@ -23,6 +23,7 @@
             114 => "Mot de passe incorrecte",
             115 => "Il semble que vous n'étiez plus connecté en session",
             116 => "Pas la permission nécessaire pour accéder à cette page",
+            403 => "Vous n'avez pas les permissions pour accéder à ce fichier",
             404 => "Le fichier ou l'URL que vous avez saisi semble être indisponible",
         ];
 

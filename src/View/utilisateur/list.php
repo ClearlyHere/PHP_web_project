@@ -1,4 +1,7 @@
 <?php
+
+    use App\Covoiturage\Lib\ConnexionUtilisateur;
+
     if (isset($utilisateurs)) {
         echo "<ul>";
         foreach ($utilisateurs as $utilisateur) {
@@ -11,10 +14,7 @@
         }
         echo "</ul>";
 
-        if (isset($cookies) && is_array($cookies)) {
-            echo "<br>";
-            foreach ($cookies as $cookie){
-                echo $cookie . "<br>";
-            }
+        if (ConnexionUtilisateur::estAdministrateur()) {
+            echo '<br><a href="index.php?controller=utilisateur&action=create">Créer un utilisateur</a>';
         }
     }
