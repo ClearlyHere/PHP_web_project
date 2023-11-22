@@ -1,3 +1,4 @@
 require all denied
 ErrorDocument 404 /R301/TD8/src/View/httpErrors/404.php
 ErrorDocument 403 /R301/TD8/src/View/httpErrors/403.php
+ErrorDocument 500 /R301/TD8/src/View/httpErrors/500.php

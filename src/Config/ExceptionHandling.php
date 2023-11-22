@@ -25,6 +25,7 @@
             116 => "Pas la permission nécessaire pour accéder à cette page",
             403 => "Vous n'avez pas les permissions pour accéder à ce fichier",
             404 => "Le fichier ou l'URL que vous avez saisi semble être indisponible",
+            500 => "Nous avons retrouvé une erreur avec le serveur, veuillez réessayer ultérieurement.",
         ];
 
         private static function throwException($errorCode): void
